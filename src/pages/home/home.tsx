@@ -2,6 +2,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { surveyFormValidation } from "../../validator/surveyFormValidation";
 import { Link } from "react-router-dom";
 import { DashboardService } from "../../services/DashboardService";
+import { useState } from "react";
 
 type TInitialValues = {
   name: string;
@@ -14,13 +15,15 @@ type TInitialValues = {
 };
 
 const Home = () => {
+    const [isLoading, setIsLoading] = useState(false);
+
   const handleFormSubmit = async (
     values: TInitialValues,
     resetForm: () => void
   ) => {
     try {
+       setIsLoading(true);
       const response = await DashboardService.createSurvey(values);
-
       if (! response) {
         console.error("Survey creation failed:", response);
       } else {
@@ -29,6 +32,9 @@ const Home = () => {
       }
     } catch (error) {
       console.error("An unexpected error occurred:", error);
+    }
+    finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -356,8 +362,9 @@ const Home = () => {
               <button
                 type="submit"
                 className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                disabled={isLoading}
               >
-                Submit
+                {isLoading ? "Submitting..." : "Submit"}
               </button>
             </div>
           </Form>
