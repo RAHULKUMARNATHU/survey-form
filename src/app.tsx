@@ -1,4 +1,4 @@
-import { RouterProvider, useNavigate } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 import { router } from "./routes";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./context/authContext";

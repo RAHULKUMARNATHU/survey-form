@@ -38,13 +38,13 @@ const Admin = () => {
   const { state } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const fetchSurveys = async () => {
-    try {
-      // a(token)
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // const fetchSurveys = async () => {
+  //   try {
+  //     // a(token)
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useEffect(() => {
     if (!state.isAuthorized) {

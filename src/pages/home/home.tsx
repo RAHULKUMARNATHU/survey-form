@@ -3,7 +3,6 @@ import { surveyFormValidation } from "../../validator/surveyFormValidation";
 import { Link } from "react-router-dom";
 import { DashboardService } from "../../services/DashboardService";
 import { useContext, useState } from "react";
-import { AxiosError } from "axios";
 import { AuthContext } from "../../context/authContext";
 
 type TInitialValues = {
