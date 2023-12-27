@@ -2,7 +2,9 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { surveyFormValidation } from "../../validator/surveyFormValidation";
 import { Link } from "react-router-dom";
 import { DashboardService } from "../../services/DashboardService";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AxiosError } from "axios";
+import { AuthContext } from "../../context/authContext";
 
 type TInitialValues = {
   name: string;
@@ -15,25 +17,25 @@ type TInitialValues = {
 };
 
 const Home = () => {
-    const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { state } = useContext(AuthContext);
 
   const handleFormSubmit = async (
     values: TInitialValues,
     resetForm: () => void
   ) => {
     try {
-       setIsLoading(true);
+      setIsLoading(true);
       const response = await DashboardService.createSurvey(values);
-      if (! response) {
-        console.error("Survey creation failed:", response);
-      } else {
+
+      if (response && response.data) {
         console.log("Survey created successfully!", response.data);
         resetForm();
       }
-    } catch (error) {
-      console.error("An unexpected error occurred:", error);
-    }
-    finally {
+    } catch (error: any) {
+      console.info({ error });
+      console.error(error.error.response?.data?.message);
+    } finally {
       setIsLoading(false);
     }
   };
@@ -50,12 +52,14 @@ const Home = () => {
             className="hidden md:flex flex-col md:flex-row md:ml-auto mt-3 md:mt-0"
             id="navbar-collapse"
           >
-            <Link
-              to="/login"
-              className="p-2 lg:px-4 md:mx-2 text-indigo-600 text-center border border-solid border-indigo-600 rounded hover:bg-indigo-600 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1"
-            >
-              Login
-            </Link>
+            {!state.isAuthorized && (
+              <Link
+                to="/login"
+                className="p-2 lg:px-4 md:mx-2 text-indigo-600 text-center border border-solid border-indigo-600 rounded hover:bg-indigo-600 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </nav>

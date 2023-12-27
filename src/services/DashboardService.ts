@@ -33,7 +33,7 @@ const createSurvey = async (surveyData: SurveyData) => {
     return await HttpClient.post(PATH.Survey, surveyData);
   } catch (error) {
     console.debug(error);
-    return { data: null, error };
+    throw { data: null, error };
   }
 };
 
